@@ -1,25 +1,46 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = (props) => {
+  return (
+    <td>
+      <button onClick={props.handleClick}>{props.text}</button>
+    </td>
+  )
+}
+
+export const Statistic = (props) => {
+  return (
+    <tr>
+      <td>
+        {props.text}
+      </td>
+      <td>
+        {props.value}
+      </td>
+    </tr >
+  )
+}
+
 const Statistics = (props) => {
-  if (props.props.all !== 0) {
+  const { good, neutral, bad, all, avarage } = props.props
+
+  if (all !== 0) {
     return (
-      <div>
-        <p>Good:{props.props.good}</p>
-        <p>Neutral:{props.props.neutral}</p>
-        <p>Bad:{props.props.bad}</p>
-        <p>All:{props.props.all}</p>
-        <p>Avarage:{(props.props.good - props.props.bad) / props.props.all}</p>
-        <p>Positive:{props.props.good / props.props.all}%</p>
-      </div>
+      <>
+        <Statistic text='Good' value={good} />
+        <Statistic text='Neutral' value={neutral} />
+        <Statistic text='Bad' value={bad} />
+        <Statistic text='All' value={all} />
+        <Statistic text='Avarage' value={avarage / all} />
+        <Statistic text='Positive' value={(good / all) * 100 + '%'} />
+      </>
     )
+
   }
   return (
-    <div>
-      <p>
-        No feedback given
-      </p>
-    </div>
+    <tr><td>No feedback given</td>
+    </tr>
   )
 }
 
@@ -50,12 +71,26 @@ const App = () => {
   return (
     <div>
       <h1>Give feedback</h1>
-      <button onClick={handleClickGood}>Good</button>
-      <button onClick={handleClickNeutral}>Neutral</button>
-      <button onClick={handleClickBad}>Bad</button>
+      <table>
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <Button handleClick={() => handleClickGood()} text='Good' />
+            <Button handleClick={() => handleClickNeutral()} text='Neutral' />
+            <Button handleClick={() => handleClickBad()} text='Bad' />
+          </tr>
+        </tbody>
+      </table>
       <h1>Statistics</h1>
-      <Statistics props={{ good, neutral, bad, all }} />
-    </div >
+      <table>
+        <thead>
+        </thead>
+        <tbody>
+          <Statistics props={{ good, neutral, bad, all, avarage }} />
+        </tbody>
+      </table>
+    </div>
   )
 }
 
